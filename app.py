@@ -24,21 +24,19 @@ def home():
 
 @app.route('/spawns/', methods=['GET'])
 def spawn_page():
-    script = server_document('http://localhost:5006/spawns')
+    script = server_document('/spawns')
     return render_template("embed.html", script=script, template="Flask")
 
 
 @app.route('/tracks/', methods=['GET'])
 def tracks_page():
-    script = server_document('http://localhost:5006/tracks')
+    script = server_document('/tracks')
     return render_template("embed.html", script=script, template="Flask")
 
 
 def bk_worker():
-    # Can't pass num_procs > 1 in this configuration. If you need to run multiple
-    # processes, see e.g. flask_gunicorn_embed.py
     server = Server({'/spawns': spawnapp, '/tracks': tracksapp}, io_loop=IOLoop(),
-                    allow_websocket_origin=["http://hurricanes-visualization.herokuapp.com/", "localhost:5006/tracks"])
+                    allow_websocket_origin=["http://hurricanes-visualization.herokuapp.com/", "localhost:5006"])
     server.start()
     server.io_loop.start()
 
