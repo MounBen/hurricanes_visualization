@@ -38,7 +38,7 @@ def bk_worker():
     # Can't pass num_procs > 1 in this configuration. If you need to run multiple
     # processes, see e.g. flask_gunicorn_embed.py
     server = Server({'/spawns': spawnapp, '/tracks': tracksapp}, io_loop=IOLoop(),
-                    allow_websocket_origin=["http://hurricanes-visualization.herokuapp.com/"])
+                    allow_websocket_origin=["http://hurricanes-visualization.herokuapp.com/", "localhost:5006/tracks"])
     server.start()
     server.io_loop.start()
 
@@ -46,4 +46,4 @@ def bk_worker():
 Thread(target=bk_worker).start()
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=8000)
+    app.run(threaded=True, port=33507)
