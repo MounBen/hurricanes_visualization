@@ -24,20 +24,20 @@ def home():
 
 @app.route('/spawns/', methods=['GET'])
 def spawn_page():
-    script = server_document('/spawns')
+    script = server_document('https://hurricanes-visualization.herokuapp.com/bokeh/spawns')
     return render_template("embed.html", script=script, template="Flask")
 
 
 @app.route('/tracks/', methods=['GET'])
 def tracks_page():
-    script = server_document('/tracks')
+    script = server_document('https://hurricanes-visualization.herokuapp.com/bokeh/tracks')
     return render_template("embed.html", script=script, template="Flask")
 
 
 def bk_worker():
     server = Server({'/spawns': spawnapp, '/tracks': tracksapp}, io_loop=IOLoop(),
-                    host="hurricanes-visualization.herokuapp.com", port="$PORT",
-                    allow_websocket_origin=["https://hurricanes-visualization.herokuapp.com/",
+                    host="hurricanes-visualization.herokuapp.com/bokeh", port="$PORT",
+                    allow_websocket_origin=["hurricanes-visualization.herokuapp.com",
                                             "localhost:8000"],
                     usexheaders=True)
     server.start()
