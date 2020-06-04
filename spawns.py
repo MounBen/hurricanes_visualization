@@ -29,7 +29,7 @@ The Distance column here gives the total distance traveled by the hurricane, not
 start and end points.
 """
 
-add_paragraph = additional_legend(loc='tracks', extra_txt=extra_txt)
+add_paragraph = additional_legend(loc='tracks', extra_text=extra_txt)
 
 # -----------------------------------------------------
 # WIDGETS
