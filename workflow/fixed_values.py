@@ -99,9 +99,11 @@ def additional_legend(loc: str, extra_text: str="") -> Div:
     text = """
     <p>The -1 option in number of hurricanes displays every hurricane under the chosen filters.</p>
     
+    <p> The choice of hurricanes to show is randomized but seeded (i.e. same choices produce same output)</p>
+    
     <p>{}</p>
     
-    <p>You can also consult the {} app <a href="https://hurricanes-bokeh.herokuapp.com/{}">here</a>.</p>
+    <p>You can also consult the {} app <a href="https://hurricanes-visualization.herokuapp.com/{}">here</a>.</p>
     
     <p> The source code to run this project locally is available 
         <a target="_blank" href="https://github.com/MounBen/hurricanes_visualization">here</a>.</p>
