@@ -8,3 +8,6 @@ To run locally, first set up your local venv
 Then you can just run the app.py
 
     $ python app.py
+
+
+Check out [the live version](https://hurricanes-visualization.herokuapp.com) !
