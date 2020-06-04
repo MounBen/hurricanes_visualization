@@ -35,11 +35,7 @@ def tracks_page():
 
 
 def bk_worker():
-    server = Server({'/spawns': spawnapp, '/tracks': tracksapp}, io_loop=IOLoop(),
-                    host="hurricanes-visualization.herokuapp.com/bokeh", port="$PORT",
-                    allow_websocket_origin=["hurricanes-visualization.herokuapp.com",
-                                            "localhost:8000"],
-                    usexheaders=True)
+    server = Server({'/spawns': spawnapp, '/tracks': tracksapp}, io_loop=IOLoop())
     server.start()
     server.io_loop.start()
 
