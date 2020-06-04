@@ -97,9 +97,15 @@ def additional_legend(loc: str) -> Div:
     """
 
     text = """
-    The -1 option in number of hurricanes displays every hurricane under the chosen filters.
+    <p>The -1 option in number of hurricanes displays every hurricane under the chosen filters.</p>
     
-    You can also consult the {} app <a href="http://127.0.0.1:8000/{}">here</a>.
+    <p>You can also consult the {} app <a href="https://hurricanes-bokeh.herokuapp.com/{}">here</a>.</p>
+    
+    <p> The source code to run this project locally is available 
+        <a target="_blank" href="https://github.com/MounBen/hurricanes_visualization">here</a>.</p>
+        
+    <p> The data is freely distributed by the NOAA,
+        <a  target="_blank" href="https://www.nhc.noaa.gov/data/#hurdat"> here</a>.</p>
     """.format(loc, loc)
     div = Div(text=text, width=200, height=100)
 
