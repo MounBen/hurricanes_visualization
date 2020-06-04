@@ -24,13 +24,13 @@ def home():
 
 @app.route('/spawns/', methods=['GET'])
 def spawn_page():
-    script = server_document('https://hurricanes-visualization.herokuapp.com/bokeh/spawns')
+    script = server_document('/spawns')
     return render_template("embed.html", script=script, template="Flask")
 
 
 @app.route('/tracks/', methods=['GET'])
 def tracks_page():
-    script = server_document('https://hurricanes-visualization.herokuapp.com/bokeh/tracks')
+    script = server_document('/tracks')
     return render_template("embed.html", script=script, template="Flask")
 
 
