@@ -1,46 +1,48 @@
-from flask import Flask, render_template
+try:
+    import asyncio
+except ImportError:
+    raise RuntimeError("This example requries Python3 / asyncio")
+
+
 from workflow.make_figures import make_start_end_figure, make_tracks_figure
 
-from bokeh.embed import server_document
-from bokeh.server.server import Server
 from tornado.ioloop import IOLoop
+from bokeh.application import Application
+from bokeh.application.handlers import FunctionHandler
+from bokeh.server.server import BaseServer
+from bokeh.server.tornado import BokehTornado
+from bokeh.server.util import bind_sockets
+from tornado.httpserver import HTTPServer
 from threading import Thread
 
-app = Flask(__name__)
+
+spawnapp = Application(FunctionHandler(make_start_end_figure))
 
 
-def spawnapp(doc):
-    make_start_end_figure(doc)
+tracksapp = Application(FunctionHandler(make_tracks_figure))
 
 
-def tracksapp(doc):
-    make_tracks_figure(doc)
-
-
-@app.route('/', methods=['GET'])
-def home():
-    return render_template("index.html", template="Flask")
-
-
-@app.route('/spawns/', methods=['GET'])
-def spawn_page():
-    script = server_document('/spawns')
-    return render_template("embed.html", script=script, template="Flask")
-
-
-@app.route('/tracks/', methods=['GET'])
-def tracks_page():
-    script = server_document('/tracks')
-    return render_template("embed.html", script=script, template="Flask")
+# This is so that if this app is run using something like "gunicorn -w 4" then
+# each process will listen on its own port
+sockets, port = bind_sockets("localhost", 0)
 
 
 def bk_worker():
-    server = Server({'/spawns': spawnapp, '/tracks': tracksapp}, io_loop=IOLoop())
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
+    bokeh_tornado = BokehTornado({'/spawns': spawnapp, '/tracks': tracksapp},
+                                 extra_websocket_origins=["localhost:5006"])
+    bokeh_http = HTTPServer(bokeh_tornado)
+    bokeh_http.add_sockets(sockets)
+
+    server = BaseServer(IOLoop.current(), bokeh_tornado, bokeh_http)
     server.start()
     server.io_loop.start()
+    print('hahaha')
 
-
-Thread(target=bk_worker).start()
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=33507)
+
+    t = Thread(target=bk_worker)
+    t.daemon = True
+    t.start()
