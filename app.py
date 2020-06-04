@@ -18,7 +18,7 @@ def spawn_page():
 
 @app.route('/tracks/', methods=['GET'])
 def tracks_page():
-    script = server_document('https://hurricanes-bokeh.herokuapp.com//tracks')
+    script = server_document('https://hurricanes-bokeh.herokuapp.com/tracks')
     return render_template("embed.html", script=script, template="Flask")
 
 
