@@ -21,7 +21,7 @@ year_min, year_max, lon_boundaries, lat_boundaries = get_boundaries(df_spawn_end
 gulf_stream_lon1, gulf_stream_lon2, gulf_stream_lat1, gulf_stream_lat2 = get_gulf_stream()
 
 # credits of the map
-url = 'https://a.basemaps.cartocdn.com/'
+url = 'https://a.basemaps.cartocdn.com/rastertiles/voyager/{Z}/{X}/{Y}.png'
 attribution = "Tiles by Carto, under CC BY 3.0. Data by OSM, under ODbL"
 
 extra_txt = """
