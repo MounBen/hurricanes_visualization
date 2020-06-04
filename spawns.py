@@ -24,7 +24,12 @@ gulf_stream_lon1, gulf_stream_lon2, gulf_stream_lat1, gulf_stream_lat2 = get_gul
 url = 'http://a.basemaps.cartocdn.com/rastertiles/voyager/{Z}/{X}/{Y}.png'
 attribution = "Tiles by Carto, under CC BY 3.0. Data by OSM, under ODbL"
 
-add_paragraph = additional_legend(loc='tracks')
+extra_txt = """
+The Distance column here gives the total distance traveled by the hurricane, not the distance between
+start and end points.
+"""
+
+add_paragraph = additional_legend(loc='tracks', extra_txt=extra_txt)
 
 # -----------------------------------------------------
 # WIDGETS

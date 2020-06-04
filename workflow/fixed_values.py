@@ -85,7 +85,7 @@ def get_gulf_stream() -> Tuple[List[float], List[float], List[float], List[float
     return gulf_stream_lon1, gulf_stream_lon2, gulf_stream_lat1, gulf_stream_lat2
 
 
-def additional_legend(loc: str) -> Div:
+def additional_legend(loc: str, extra_text: str="") -> Div:
     """
     Create an additional legend layer for the maps.
 
@@ -99,6 +99,8 @@ def additional_legend(loc: str) -> Div:
     text = """
     <p>The -1 option in number of hurricanes displays every hurricane under the chosen filters.</p>
     
+    <p>{}</p>
+    
     <p>You can also consult the {} app <a href="https://hurricanes-bokeh.herokuapp.com/{}">here</a>.</p>
     
     <p> The source code to run this project locally is available 
@@ -106,7 +108,7 @@ def additional_legend(loc: str) -> Div:
         
     <p> The data is freely distributed by the NOAA,
         <a  target="_blank" href="https://www.nhc.noaa.gov/data/#hurdat"> here</a>.</p>
-    """.format(loc, loc)
+    """.format(extra_text, loc, loc)
     div = Div(text=text, width=200, height=100)
 
     return div
