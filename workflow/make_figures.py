@@ -167,6 +167,8 @@ def make_start_end_figure(doc):
             if n > len(df_temp):  # For cases where there are not enough data points
                 n = int(len(df_temp))
 
+            np.random.seed(42)
+
             select_list = list(np.random.choice(df_temp.index, size=n, replace=False))
 
             filtr = df_temp.index.map(lambda x: x in select_list)
@@ -301,6 +303,8 @@ def make_start_end_figure(doc):
 
             if n > len(df_temp):  # For cases where there are not enough data points
                 n = int(len(df_temp))
+
+            np.random.seed(42)
 
             select_list = list(np.random.choice(df_temp.index, size=n, replace=False))
 
@@ -521,6 +525,8 @@ def make_tracks_figure(doc):
 
             if n > len(df_temp):  # For cases where there are not enough data points
                 n = int(len(df_temp))
+
+            np.random.seed(42)
 
             select_list = list(np.random.choice(df_temp.ID.unique(), size=n, replace=False))
 
