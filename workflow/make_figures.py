@@ -37,8 +37,8 @@ def make_start_end_figure(doc):
     select_zone = Select(title='Spawning Zone:', value='All', options=options_zone)
 
     # Definition of buttons for end points and distances
-    toggle_month = Toggle(label="End points", button_type="success")
-    toggle_dist_month = Toggle(label="Distance", button_type="success")
+    toggle_month = Toggle(label="Show end points", button_type="success")
+    toggle_dist_month = Toggle(label="Show distance traveled", button_type="success")
 
     # definition and configuration of the year and month sliders
     slider_year = RangeSlider(start=year_min, end=year_max,
@@ -48,8 +48,8 @@ def make_start_end_figure(doc):
                                value=(1, 12), step=1, title="Months")
 
     # End points
-    toggle_season = Toggle(label="End points", button_type="success")
-    toggle_dist_season = Toggle(label="Distance", button_type="success")
+    toggle_season = Toggle(label="Show end points", button_type="success")
+    toggle_dist_season = Toggle(label="Show distance traveled", button_type="success")
 
     # definition and configuration of the number selection
     select_number_season = Select(title='Number of hurricanes:', value='5',
@@ -181,18 +181,22 @@ def make_start_end_figure(doc):
         if not active:
 
             c2.visible, s1.visible = False, False
+            toggle_month.label = "Show end points"
 
         else:
 
             c2.visible, s1.visible = True, True
+            toggle_month.label= "Unshow end points"
 
         if not dist:
 
             c1.visible, d1.visible = True, False
+            toggle_dist_month.label = "Show distance traveled"
 
         else:
 
             c1.visible, d1.visible = False, True
+            toggle_dist_month.label = "Unshow distance traveled"
 
     # activation of the changes on user action
     select_number.on_change('value', update_map_se)
@@ -305,23 +309,29 @@ def make_start_end_figure(doc):
             source.data = ColumnDataSource.from_df(df_temp.loc[filtr])
 
     def season_active(atrr, old, new):
+
         active = toggle_season.active
         dist = toggle_dist_season.active
 
         if not active:
 
             c4.visible, s2.visible = False, False
+            toggle_season.label = "Show end points"
 
         else:
 
             c4.visible, s2.visible = True, True
+            toggle_season.label = "Show end points"
 
         if not dist:
 
             c3.visible, d2.visible = True, False
+            toggle_dist_season.label = "Show distance traveled"
+
         else:
 
             c3.visible, d2.visible = False, True
+            toggle_dist_season.label = "Unshow distance traveled"
 
     select_number_season.on_change('value', update_map_season)
     slider_year_season.on_change('value', update_map_season)
