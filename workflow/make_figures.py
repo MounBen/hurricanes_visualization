@@ -343,13 +343,13 @@ def make_start_end_figure(doc):
 
     def tab_change(atrr, old, new):
 
-        n = 5
+        if tabs.active == 0:
 
-        select_list = list(np.random.choice(df_spawn_end.index, size=n, replace=False))
+            update_map_se('', '', '')
 
-        filter = df_spawn_end.index.map(lambda x: x in select_list)
+        else:
 
-        source.data = ColumnDataSource.from_df(df_spawn_end.loc[filter])
+            update_map_season('', '', '')
 
     tabs.on_change('active', tab_change)
 
