@@ -8,7 +8,6 @@ from bokeh.models.widgets import Panel, Tabs, Toggle, DataTable, TableColumn
 from bokeh.models import ColumnDataSource, WMTSTileSource, RangeSlider, Select, HoverTool
 
 
-
 """
 Creates a Bokeh app for visualizations of start and end of hurricanes
 """
@@ -55,8 +54,8 @@ slider_month = RangeSlider(start=1, end=12,
                            value=(1, 12), step=1, title="Months")
 
 # End points
-toggle_season = Toggle(label="End points", button_type="success")
-toggle_dist_season = Toggle(label="Distance", button_type="success")
+toggle_season = Toggle(label="Show end points", button_type="success")
+toggle_dist_season = Toggle(label="Show distance traveled", button_type="success")
 
 # definition and configuration of the number selection
 select_number_season = Select(title='Number of hurricanes:', value='5',
@@ -119,8 +118,7 @@ s1 = p.segment(x0='x_start', y0='y_start', x1='x_end', y1='y_end',
 c2.visible, s1.visible, d1.visible = False, False, False
 
 # Configuration of the hovertool
-hover = HoverTool(tooltips=[("ID", "@ID"), ("Duration", "@Duration"),
-                            ("Distance", "@Distance")],
+hover = HoverTool(tooltips=[("ID", "@ID"), ("Duration", "@Duration"), ("Distance", "@Distance")],
                   renderers=[c1, c2, d1], formatters={'Duration': 'printf'})
 p.tools.append(hover)
 
@@ -143,6 +141,7 @@ data_table = DataTable(columns=cols, source=source, width=1100, selectable=False
 # ------------------------------------------------------------------------
 # UPDATING FIRST TAB
 # ------------------------------------------------------------------------
+
 
 # updating process of the data underlying the map depending on user actions.
 def update_map_se(attr, old, new):
@@ -174,11 +173,14 @@ def update_map_se(attr, old, new):
         if n > len(df_temp):  # For cases where there are not enough data points
             n = int(len(df_temp))
 
+        np.random.seed(42)
+
         select_list = list(np.random.choice(df_temp.index, size=n, replace=False))
 
         filtr = df_temp.index.map(lambda x: x in select_list)
 
         source.data = ColumnDataSource.from_df(df_temp.loc[filtr])
+
 
 def month_active(atrr, old, new):
 
@@ -200,6 +202,7 @@ def month_active(atrr, old, new):
     else:
 
         c1.visible, d1.visible = False, True
+
 
 # activation of the changes on user action
 select_number.on_change('value', update_map_se)
@@ -268,14 +271,15 @@ p_season.legend.location = "top_left"
 # UPDATING SECOND TAB
 # ------------------------------------------------------------------------
 
+
 # updating process of the data underlying the map depending on user actions.
 def update_map_season(attr, old, new):
 
     yr = slider_year_season.value
     season = select_season.value
     zone = select_zone_season.value
-    n = select_number_season.value
-    n = int(n)
+    m = select_number_season.value
+    m = int(m)
 
     if (zone == 'All') & (season == 'All'):
         df_temp = df_spawn_end.loc[(df_spawn_end['Year_start'] >= yr[0])
@@ -297,21 +301,25 @@ def update_map_season(attr, old, new):
                                    & (df_spawn_end['Year_start'] >= yr[0])
                                    & (df_spawn_end['Year_start'] <= yr[1])]
 
-    if n == -1:
+    if m == -1:
 
         source.data = ColumnDataSource.from_df(df_temp)
     else:
 
-        if n > len(df_temp):  # For cases where there are not enough data points
-            n = int(len(df_temp))
+        if m > len(df_temp):  # For cases where there are not enough data points
+            m = int(len(df_temp))
 
-        select_list = list(np.random.choice(df_temp.index, size=n, replace=False))
+        np.random.seed(42)
+
+        select_list = list(np.random.choice(df_temp.index, size=m, replace=False))
 
         filtr = df_temp.index.map(lambda x: x in select_list)
 
         source.data = ColumnDataSource.from_df(df_temp.loc[filtr])
 
+
 def season_active(atrr, old, new):
+
     active = toggle_season.active
     dist = toggle_dist_season.active
 
@@ -329,6 +337,7 @@ def season_active(atrr, old, new):
     else:
 
         c3.visible, d2.visible = False, True
+
 
 select_number_season.on_change('value', update_map_season)
 slider_year_season.on_change('value', update_map_season)
@@ -348,19 +357,21 @@ tab_season = Panel(child=column(row(column(slider_year_season, select_number_sea
 
 tabs = Tabs(tabs=[tab_month, tab_season])
 
+
 def tab_change(atrr, old, new):
 
-    n = 5
+    if tabs.active == 0:
 
-    select_list = list(np.random.choice(df_spawn_end.index, size=n, replace=False))
+        update_map_se('', '', '')
 
-    filter = df_spawn_end.index.map(lambda x: x in select_list)
+    else:
 
-    source.data = ColumnDataSource.from_df(df_spawn_end.loc[filter])
+        update_map_season('', '', '')
+
 
 tabs.on_change('active', tab_change)
 
 # Make document
 doc.add_root(tabs)
-doc.title = 'Hurricanes'
+doc.title = 'Hurricanes start and end points'
 doc.theme = Theme(filename="theme.yaml")
